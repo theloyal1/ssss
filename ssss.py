@@ -18,6 +18,7 @@ LEFT = 3
 
 pygame.init()
 screen = pygame.display.set_mode((600, 600))
+screen.fill((88, 230, 83))
 pygame.display.set_caption("SSSSSSS")
 
 # Definindo a cobra e a maçã
@@ -78,7 +79,7 @@ while True:
         exit()
 
     # Verificando colisão com as bordas da tela
-    screen.fill((0, 0, 0))
+    screen.fill((88, 230, 83))
     screen.blit(maca, maca_pos)
     for pos in cobra:
         screen.blit(cobra_skin, pos)
