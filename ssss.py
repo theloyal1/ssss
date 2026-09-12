@@ -70,6 +70,12 @@ while True:
         cobra[0] = (cobra[0][0] + 10, cobra[0][1])
     if direcao == LEFT:
         cobra[0] = (cobra[0][0] - 10, cobra[0][1])
+    
+    # Verificando colisão com as bordas da tela e consigo mesma
+    if cobra[0][0] < 0 or cobra [0][0] >= 600 or cobra [0][1] <0 or cobra [0][1] >= 600 or cobra[0] in cobra[1:]:
+        print("Morto")
+        pygame.quit()
+        exit()
 
     # Verificando colisão com as bordas da tela
     screen.fill((0, 0, 0))
