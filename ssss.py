@@ -18,7 +18,7 @@ def reiniciar_jogo(): # Função para reiniciar o jogo
     maca_pos = on_grid_random()
 
 def fim_de_jogo():
-    screen.fill((0, 0, 0))
+    screen.fill((54, 12, 12))
 
     titulo = fonte.render("FIM DE JOGO", True, (255, 0, 0))
     texto = fonte.render(f"Pontuação final: {pontuacao}", True, (255, 255, 255))
@@ -30,12 +30,23 @@ def fim_de_jogo():
 
     pygame.display.update()
 
+def iniciar_jogo():
+    screen.fill((109, 250, 77))
+
+    titulo = fonte.render("SSSSSSS", True, (0, 124, 190))
+    instrucoes = fonte.render("Pressione ENTER para iniciar o jogo.", True, (255, 255, 255))
+
+    screen.blit(titulo, (50, 300))
+    screen.blit(instrucoes, (50, 340))
+
+    pygame.display.update()
+
 UP = 0
 RIGHT = 1
 DOWN = 2
 LEFT = 3
 
-estado = "jogando"  # Estado inicial do jogo
+estado = "inicio"  # Estado inicial do jogo
 
 pygame.init()
 screen = pygame.display.set_mode((600, 600))
@@ -67,6 +78,12 @@ while True:
             exit()
         
         if event.type == KEYDOWN:
+            if estado == "inicio":
+                if event.key == K_RETURN:
+                    reiniciar_jogo()
+                    pontuacao = 0
+                    estado = "jogando"
+
             if estado == "game_over":
                 if event.key == K_RETURN:
                     reiniciar_jogo()
@@ -109,8 +126,9 @@ while True:
             estado = "game_over"
 
 
-
-    if estado == "jogando":
+    if estado == "inicio":
+        iniciar_jogo()
+    elif estado == "jogando":
         # Verificando colisão com as bordas da tela
         screen.fill((88, 230, 83))
         screen.blit(maca, maca_pos)
