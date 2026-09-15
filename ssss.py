@@ -20,13 +20,22 @@ def reiniciar_jogo(): # Função para reiniciar o jogo
 def fim_de_jogo():
     screen.fill((54, 12, 12))
 
-    titulo = fonte.render("FIM DE JOGO", True, (255, 0, 0))
-    texto = fonte.render(f"Pontuação final: {pontuacao}", True, (255, 255, 255))
-    reiniciar = fonte.render("Pressione ENTER para jogar novamente.", True, (255, 255, 255))
+    titulo = pygame.font.Font(None, 80)
+    texto = pygame.font.Font(None, 36)
 
-    screen.blit(titulo, (50, 300))
-    screen.blit(texto, (50, 340))
-    screen.blit(reiniciar, (50, 380))
+    texto_titulo = titulo.render("FIM DE JOGO", True, (255, 0, 0))
+    texto_pontuacao = texto.render(f"Pontuação final: {pontuacao}", True, (255, 255, 255))
+    texto_reiniciar = texto.render("ENTER - Jogar novamente", True, (255, 255, 255))
+    texto_sair = texto.render("ESC - Sair", True, (255, 255, 255))
+
+    titulo_rect = texto_titulo.get_rect(center=(300, 200))
+    screen.blit(texto_titulo, titulo_rect)
+    pontuacao_rect = texto_pontuacao.get_rect(center=(300, 340))
+    screen.blit(texto_pontuacao, pontuacao_rect)
+    reiniciar_rect = texto_reiniciar.get_rect(center=(300, 380))
+    screen.blit(texto_reiniciar, reiniciar_rect)
+    sair_rect = texto_sair.get_rect(center=(300, 420))
+    screen.blit(texto_sair, sair_rect)
 
     pygame.display.update()
 
@@ -71,15 +80,24 @@ def instrucoes():
     texto_gameover = texto.render("Evite bater na parede ou na própria cobra.", True, (255, 255, 255))
     texto_voltar = texto.render("ESC - Voltar", True, (255, 255, 255))
 
-    screen.blit(texto_titulo, (30, 60))
-    screen.blit(texto_controles, (30, 135))
-    screen.blit(texto_movimento, (30, 180))
-    screen.blit(texto_objetivo, (30, 220))
-    screen.blit(texto_macas, (30, 260))
-    screen.blit(texto_velocidade, (30, 300))
-    screen.blit(texto_perigo, (30, 340))
-    screen.blit(texto_gameover, (30, 380))
-    screen.blit(texto_voltar, (30, 420))
+    titulo_rect = texto_titulo.get_rect(center=(300, 60))
+    screen.blit(texto_titulo, titulo_rect)
+    controles_rect = texto_controles.get_rect(topleft=(30, 135))
+    screen.blit(texto_controles, controles_rect)
+    movimento_rect = texto_movimento.get_rect(topleft=(30, 180))
+    screen.blit(texto_movimento, movimento_rect)
+    objetivo_rect = texto_objetivo.get_rect(topleft=(30, 220))
+    screen.blit(texto_objetivo, objetivo_rect)
+    macas_rect = texto_macas.get_rect(topleft=(30, 260))
+    screen.blit(texto_macas, macas_rect)
+    velocidade_rect = texto_velocidade.get_rect(topleft=(30, 300))
+    screen.blit(texto_velocidade, velocidade_rect)
+    perigo_rect = texto_perigo.get_rect(topleft=(30, 340))
+    screen.blit(texto_perigo, perigo_rect)
+    gameover_rect = texto_gameover.get_rect(topleft=(30, 380))
+    screen.blit(texto_gameover, gameover_rect)
+    voltar_rect = texto_voltar.get_rect(center=(300, 420))
+    screen.blit(texto_voltar, voltar_rect)
 
     pygame.display.update()
 
@@ -145,6 +163,9 @@ while True:
                     pontuacao = 0
                     velocidade = 15
                     estado = "jogando"
+                elif event.key == K_ESCAPE:
+                    pygame.quit()
+                    exit()
         
             elif estado == "jogando":
                 if event.key == K_UP and direcao != DOWN:
