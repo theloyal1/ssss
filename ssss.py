@@ -101,6 +101,17 @@ def instrucoes():
 
     pygame.display.update()
 
+def carregar_recorde():
+    try:
+        with open("recorde.txt", "r") as arquivo:
+            return int(arquivo.read())
+    except FileNotFoundError:
+        return 0
+
+def salvar_recorde(recorde):
+    with open("recorde.txt", "w") as arquivo:
+        arquivo.write(str(recorde))
+
 UP = 0
 RIGHT = 1
 DOWN = 2
@@ -126,7 +137,7 @@ maca_pos = on_grid_random() # Posição aleatória da maçã
 direcao = LEFT
 pontuacao = 0
 velocidade = 15
-high_score = 0
+high_score = carregar_recorde()
 
 # Loop principal do jogo
 clock = pygame.time.Clock()
@@ -187,6 +198,7 @@ while True:
 
             if pontuacao > high_score:
                 high_score = pontuacao
+                salvar_recorde(high_score)
 
             if pontuacao % 5 == 0 and velocidade < 31:
                 velocidade += 2
