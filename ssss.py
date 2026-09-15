@@ -126,6 +126,7 @@ maca_pos = on_grid_random() # Posição aleatória da maçã
 direcao = LEFT
 pontuacao = 0
 velocidade = 15
+high_score = 0
 
 # Loop principal do jogo
 clock = pygame.time.Clock()
@@ -184,6 +185,9 @@ while True:
             cobra.append((0,0))
             pontuacao += 1
 
+            if pontuacao > high_score:
+                high_score = pontuacao
+
             if pontuacao % 5 == 0 and velocidade < 31:
                 velocidade += 2
 
@@ -216,10 +220,16 @@ while True:
         for pos in cobra:
             screen.blit(cobra_skin, pos)
 
-        texto_pontuacao = fonte.render(f"Pontuação: {pontuacao}", True, (255, 255, 255))
-        texto_velocidade = fonte.render(f"Velocidade: {velocidade}", True, (255, 255, 255))
-        screen.blit(texto_pontuacao, (10, 10))
-        screen.blit(texto_velocidade, (10, 40))
+        fonte_jogando = pygame.font.Font(None, 30)
+        texto_pontuacao = fonte_jogando.render(f"Pontuação: {pontuacao}", True, (255, 255, 255))
+        texto_velocidade = fonte_jogando.render(f"Velocidade: {velocidade}", True, (255, 255, 255))
+        texto_maior_pontuacao = fonte_jogando.render(f"Recorde: {high_score}", True, (255, 255, 255))
+        pontuacao_rect = texto_pontuacao.get_rect(topleft=(10, 10))
+        velocidade_rect = texto_velocidade.get_rect(center=(300, 20))
+        maior_pont_rect = texto_maior_pontuacao.get_rect(topright=(590, 10))
+        screen.blit(texto_pontuacao, pontuacao_rect)
+        screen.blit(texto_velocidade, velocidade_rect)
+        screen.blit(texto_maior_pontuacao, maior_pont_rect)
 
         pygame.display.update()
     elif estado == "game_over":
