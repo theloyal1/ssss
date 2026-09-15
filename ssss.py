@@ -34,12 +34,25 @@ def iniciar_jogo():
     screen.fill((109, 250, 77))
 
     titulo = fonte.render("SSSSSSS", True, (0, 124, 190))
-    instrucoes = fonte.render("Pressione ENTER para iniciar o jogo.", True, (255, 255, 255))
+    texto = fonte.render("Pressione ENTER para iniciar o jogo.", True, (255, 255, 255))
 
     screen.blit(titulo, (50, 300))
-    screen.blit(instrucoes, (50, 340))
+    screen.blit(texto, (50, 340))
 
     pygame.display.update()
+
+"""
+def instrucoes():
+    screen.fill((109, 250, 77))
+
+    titulo = fonte.render("Instruções", True, (0, 124, 190))
+    texto = fonte.render("Use as setas para mover a cobra. Só tome cuidado, porque ela aumenta de velocidade a cada 5 maçãs comidas.", True, (255, 255, 255))
+
+    screen.blit(titulo, (50, 300))
+    screen.blit(texto, (50, 340))
+
+    pygame.display.update()
+"""
 
 UP = 0
 RIGHT = 1
@@ -65,12 +78,13 @@ maca_pos = on_grid_random() # Posição aleatória da maçã
 
 direcao = LEFT
 pontuacao = 0
+velocidade = 15
 
 # Loop principal do jogo
 clock = pygame.time.Clock()
 
 while True:
-    clock.tick(20)
+    clock.tick(velocidade)
     # Verificando eventos do teclado
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -82,12 +96,14 @@ while True:
                 if event.key == K_RETURN:
                     reiniciar_jogo()
                     pontuacao = 0
+                    velocidade = 15
                     estado = "jogando"
 
             if estado == "game_over":
                 if event.key == K_RETURN:
                     reiniciar_jogo()
                     pontuacao = 0
+                    velocidade = 15
                     estado = "jogando"
         
             elif estado == "jogando":
@@ -106,6 +122,9 @@ while True:
             maca_pos = on_grid_random()
             cobra.append((0,0))
             pontuacao += 1
+
+            if pontuacao % 5 == 0 and velocidade <= 31:
+                velocidade += 2
 
         # Atualizando a posição da cobra
         for i in range(len(cobra) - 1, 0, -1):
@@ -136,7 +155,9 @@ while True:
             screen.blit(cobra_skin, pos)
 
         texto_pontuacao = fonte.render(f"Pontuação: {pontuacao}", True, (255, 255, 255))
+        texto_velocidade = fonte.render(f"Velocidade: {velocidade}", True, (255, 255, 255))
         screen.blit(texto_pontuacao, (10, 10))
+        screen.blit(texto_velocidade, (10, 40))
 
         pygame.display.update()
     elif estado == "game_over":
