@@ -31,7 +31,7 @@ def fim_de_jogo():
     pygame.display.update()
 
 def iniciar_jogo():
-    screen.fill((109, 250, 77))
+    screen.fill((27, 27, 27))
 
     titulo = fonte.render("SSSSSSS", True, (0, 124, 190))
     texto = fonte.render("Pressione ENTER para iniciar o jogo.", True, (255, 255, 255))
@@ -41,18 +41,24 @@ def iniciar_jogo():
 
     pygame.display.update()
 
-"""
 def instrucoes():
-    screen.fill((109, 250, 77))
+    screen.fill((27, 27, 27))
 
     titulo = fonte.render("Instruções", True, (0, 124, 190))
-    texto = fonte.render("Use as setas para mover a cobra. Só tome cuidado, porque ela aumenta de velocidade a cada 5 maçãs comidas.", True, (255, 255, 255))
+    texto1 = fonte.render("Use as setas para mover a cobra.", True, (255, 255, 255))
+    texto2 = fonte.render("Coma as maçãs para crescer e ganhar pontos.", True, (255, 255, 255))
+    texto3 = fonte.render("A cada 5 maçãs comidas, a cobra aumenta de velocidade.", True, (255, 255, 255))
+    texto4 = fonte.render("Evite bater na parede ou na própria cobra.", True, (255, 255, 255))
+    texto5 = fonte.render("Pressione ENTER para voltar ao menu principal.", True, (255, 255, 255))
 
     screen.blit(titulo, (50, 300))
-    screen.blit(texto, (50, 340))
+    screen.blit(texto1, (50, 340))
+    screen.blit(texto2, (50, 380))
+    screen.blit(texto3, (50, 420))
+    screen.blit(texto4, (50, 460))
+    screen.blit(texto5, (50, 500))
 
     pygame.display.update()
-"""
 
 UP = 0
 RIGHT = 1
@@ -63,7 +69,7 @@ estado = "inicio"  # Estado inicial do jogo
 
 pygame.init()
 screen = pygame.display.set_mode((600, 600))
-screen.fill((88, 230, 83))
+screen.fill((27, 27, 27))
 pygame.display.set_caption("SSSSSSS")
 fonte = pygame.font.Font(None, 36)
 
@@ -98,6 +104,13 @@ while True:
                     pontuacao = 0
                     velocidade = 15
                     estado = "jogando"
+
+                elif event.key == K_i:
+                    estado = "instrucoes"
+
+            if estado == "instrucoes":
+                if event.key == K_RETURN or event.key == K_ESCAPE:
+                    estado = "inicio"
 
             if estado == "game_over":
                 if event.key == K_RETURN:
@@ -147,6 +160,8 @@ while True:
 
     if estado == "inicio":
         iniciar_jogo()
+    elif estado == "instrucoes":
+        instrucoes()
     elif estado == "jogando":
         # Verificando colisão com as bordas da tela
         screen.fill((88, 230, 83))
