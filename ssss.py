@@ -33,30 +33,53 @@ def fim_de_jogo():
 def iniciar_jogo():
     screen.fill((27, 27, 27))
 
-    titulo = fonte.render("SSSSSSS", True, (0, 124, 190))
-    texto = fonte.render("Pressione ENTER para iniciar o jogo.", True, (255, 255, 255))
+    titulo = pygame.font.Font(None, 80)
+    opcoes = pygame.font.Font(None, 36)
 
-    screen.blit(titulo, (50, 300))
-    screen.blit(texto, (50, 340))
+    texto_titulo = titulo.render("SSSSSSS", True, (0, 124, 190))
+    texto_jogar = opcoes.render("ENTER - Jogar", True, (255, 255, 255))
+    texto_instrucoes = opcoes.render("I - Instruções", True, (255, 255, 255))
+    texto_sair = opcoes.render("ESC - Sair", True, (255, 255, 255))
+
+    titulo_rect = texto_titulo.get_rect(center=(300, 200))
+    screen.blit(texto_titulo, titulo_rect)
+
+    jogar_rect = texto_jogar.get_rect(center=(300, 340))
+    instrucoes_rect = texto_instrucoes.get_rect(center=(300, 380))
+    sair_rect = texto_sair.get_rect(center=(300, 420))
+
+    screen.blit(texto_jogar, jogar_rect)
+    screen.blit(texto_instrucoes, instrucoes_rect)
+    screen.blit(texto_sair, sair_rect)
 
     pygame.display.update()
 
 def instrucoes():
     screen.fill((27, 27, 27))
 
-    titulo = fonte.render("Instruções", True, (0, 124, 190))
-    texto1 = fonte.render("Use as setas para mover a cobra.", True, (255, 255, 255))
-    texto2 = fonte.render("Coma as maçãs para crescer e ganhar pontos.", True, (255, 255, 255))
-    texto3 = fonte.render("A cada 5 maçãs comidas, a cobra aumenta de velocidade.", True, (255, 255, 255))
-    texto4 = fonte.render("Evite bater na parede ou na própria cobra.", True, (255, 255, 255))
-    texto5 = fonte.render("Pressione ENTER para voltar ao menu principal.", True, (255, 255, 255))
+    titulo = pygame.font.Font(None, 64)
+    secao = pygame.font.Font(None, 40)
+    texto = pygame.font.Font(None, 30)
 
-    screen.blit(titulo, (50, 300))
-    screen.blit(texto1, (50, 340))
-    screen.blit(texto2, (50, 380))
-    screen.blit(texto3, (50, 420))
-    screen.blit(texto4, (50, 460))
-    screen.blit(texto5, (50, 500))
+    texto_titulo = titulo.render("INSTRUÇÕES", True, (0, 124, 190))
+    texto_controles = secao.render("CONTROLES", True, (255, 255, 255))
+    texto_movimento = texto.render("Use as setas para mover a cobra.", True, (255, 255, 255))
+    texto_objetivo = secao.render("OBJETIVO", True, (255, 255, 255))
+    texto_macas = texto.render("Coma as maçãs para crescer e ganhar pontos.", True, (255, 255, 255))
+    texto_velocidade = texto.render("A cada 5 maçãs comidas, a velocidade aumenta.", True, (255, 255, 255))
+    texto_perigo = secao.render("PERIGO", True, (255, 255, 255))
+    texto_gameover = texto.render("Evite bater na parede ou na própria cobra.", True, (255, 255, 255))
+    texto_voltar = texto.render("ESC - Voltar", True, (255, 255, 255))
+
+    screen.blit(texto_titulo, (30, 60))
+    screen.blit(texto_controles, (30, 135))
+    screen.blit(texto_movimento, (30, 180))
+    screen.blit(texto_objetivo, (30, 220))
+    screen.blit(texto_macas, (30, 260))
+    screen.blit(texto_velocidade, (30, 300))
+    screen.blit(texto_perigo, (30, 340))
+    screen.blit(texto_gameover, (30, 380))
+    screen.blit(texto_voltar, (30, 420))
 
     pygame.display.update()
 
@@ -108,8 +131,12 @@ while True:
                 elif event.key == K_i:
                     estado = "instrucoes"
 
+                elif event.key == K_ESCAPE:
+                    pygame.quit()
+                    exit()
+
             if estado == "instrucoes":
-                if event.key == K_RETURN or event.key == K_ESCAPE:
+                if event.key == K_ESCAPE:
                     estado = "inicio"
 
             if estado == "game_over":
@@ -136,7 +163,7 @@ while True:
             cobra.append((0,0))
             pontuacao += 1
 
-            if pontuacao % 5 == 0 and velocidade <= 31:
+            if pontuacao % 5 == 0 and velocidade < 31:
                 velocidade += 2
 
         # Atualizando a posição da cobra
@@ -156,7 +183,6 @@ while True:
         # Verificando colisão com as bordas da tela e consigo mesma
         if cobra[0][0] < 0 or cobra [0][0] >= 600 or cobra [0][1] <0 or cobra [0][1] >= 600 or cobra[0] in cobra[1:]:
             estado = "game_over"
-
 
     if estado == "inicio":
         iniciar_jogo()
