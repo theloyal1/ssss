@@ -3,9 +3,16 @@ import random
 import pygame
 from pygame.locals import *
 
+UP = 0
+RIGHT = 1
+DOWN = 2
+LEFT = 3
+
+ALTURA_BARRA = 50
+
 def on_grid_random(): # Função para gerar uma posição aleatória na tela
     x = random.randint(0, 590)
-    y = random.randint(0, 590)
+    y = random.randint(ALTURA_BARRA, 590)
     return (x//10 * 10, y//10 * 10)
 
 def collision(c1, c2): # Função para verificar se houve colisão entre a cobra e a maçã
@@ -112,11 +119,6 @@ def salvar_recorde(recorde):
     with open("recorde.txt", "w") as arquivo:
         arquivo.write(str(recorde))
 
-UP = 0
-RIGHT = 1
-DOWN = 2
-LEFT = 3
-
 estado = "inicio"  # Estado inicial do jogo
 
 pygame.init()
@@ -218,7 +220,7 @@ while True:
             cobra[0] = (cobra[0][0] - 10, cobra[0][1])
     
         # Verificando colisão com as bordas da tela e consigo mesma
-        if cobra[0][0] < 0 or cobra [0][0] >= 600 or cobra [0][1] <0 or cobra [0][1] >= 600 or cobra[0] in cobra[1:]:
+        if cobra[0][0] < 0 or cobra [0][0] >= 600 or cobra [0][1] < ALTURA_BARRA or cobra [0][1] >= 600 or cobra[0] in cobra[1:]:
             estado = "game_over"
 
     if estado == "inicio":
@@ -228,6 +230,11 @@ while True:
     elif estado == "jogando":
         # Verificando colisão com as bordas da tela
         screen.fill((88, 230, 83))
+        pygame.draw.rect(
+            screen,
+            (50, 50, 50),
+            (0, 0, 600, ALTURA_BARRA)
+        )
         screen.blit(maca, maca_pos)
         for pos in cobra:
             screen.blit(cobra_skin, pos)
